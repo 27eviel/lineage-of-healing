@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>The Lineage of Healing</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@300;500&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#f7f5f1; /* paper */
+      --ink:#1b1b1b;
+      --accent:#8b2e2e; /* cinnabar red */
+      --jade:#1f6f5a; /* jade green */
+      --muted:#6b6660;
+      --maxw:900px;
+      font-family: 'Noto Sans TC', 'Noto Serif TC', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg),#efece7);color:var(--ink);}
+    .wrap{max-width:var(--maxw);margin:36px auto;padding:28px;background:rgba(255,255,255,0.6);box-shadow:0 10px 30px rgba(27,27,27,0.08);border-radius:16px;border:1px solid rgba(27,27,27,0.04);}
+    header{display:flex;gap:16px;align-items:center}
+    .seal{width:84px;height:84px;border-radius:12px;background:linear-gradient(180deg,var(--accent),#6b1f1f);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;box-shadow:0 6px 18px rgba(139,46,46,0.12);}
+    h1{margin:0;font-family:'Noto Serif TC';font-size:28px;line-height:1.05}
+    .sub{color:var(--muted);font-size:13px;margin-top:6px}
+
+    main{display:grid;grid-template-columns:1fr 320px;gap:24px;margin-top:20px}
+    @media(max-width:880px){main{grid-template-columns:1fr;}
+      .aside{order:2}
+    }
+
+    .player{padding:18px;border-radius:12px;border:1px solid rgba(27,27,27,0.04);background:linear-gradient(180deg,rgba(255,255,255,0.8),transparent);}
+    .cover{display:flex;gap:16px;align-items:center}
+    .cover-art{width:120px;height:120px;border-radius:8px;background:linear-gradient(135deg,var(--jade),#245e4b);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px}
+    .controls{margin-top:12px;display:flex;gap:12px;align-items:center}
+    .btn{padding:10px 14px;border-radius:10px;border:0;background:var(--ink);color:#fff;font-weight:600;cursor:pointer}
+    .btn.ghost{background:transparent;color:var(--ink);border:1px solid rgba(27,27,27,0.06)}
+    .time{font-size:13px;color:var(--muted)}
+
+    .transcript{margin-top:18px;line-height:1.7;padding:12px;border-radius:10px;background:rgba(31,111,90,0.03);font-size:15px}
+    .transcript h3{margin-top:0}
+
+    .aside{padding:18px;border-radius:12px;border:1px solid rgba(27,27,27,0.04);height:fit-content}
+    .qrwrap{display:flex;flex-direction:column;gap:12px;align-items:center}
+    .qr{width:200px;height:200px;border-radius:8px;background:#fff;padding:12px;display:flex;align-items:center;justify-content:center}
+    .meta{font-size:13px;color:var(--muted);margin-top:8px}
+
+    footer{margin-top:20px;text-align:center;color:var(--muted);font-size:13px}
+
+    /* subtle brush ornament in background */
+    .brush{position:absolute;right:4%;top:6%;opacity:0.06;transform:rotate(-18deg);font-size:120px}
+
+    /* download link style */
+    a.download{display:inline-block;margin-top:10px;text-decoration:none;color:var(--accent);font-weight:600}
+  </style>
+</head>
+<body>
+  <div class="brush">墨</div>
+  <div class="wrap" id="page">
+    <header>
+      <div class="seal">傳承</div>
+      <div>
+        <h1>The lineage of Healing</h1>
+        <div class="sub">An audio piece for an art exhibition — traditional forms, contemporary listening</div>
+      </div>
+    </header>
+
+    <main>
+      <section>
+        <div class="player" id="playerWrap">
+          <div class="cover">
+            <div class="cover-art">Healing<br/>傳承</div>
+            <div style="flex:1">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div>
+                  <strong style="font-size:17px">The lineage of Healing</strong>
+                  <div style="font-size:13px;color:var(--muted);margin-top:6px">Audio piece — length: <span id="duration">--:--</span></div>
+                </div>
+                <div class="time" id="currentTime">0:00</div>
+              </div>
+
+              <div class="controls">
+                <button id="playBtn" class="btn">Play</button>
+                <button id="rewBtn" class="btn ghost">⟲ 10s</button>
+                <button id="fwdBtn" class="btn ghost">10s ⟳</button>
+                <a id="downloadAudio" class="download" href="#">Download audio</a>
+              </div>
+
+              <input id="seek" type="range" min="0" max="100" value="0" style="width:100%;margin-top:12px">
+
+            </div>
+          </div>
+
+          <!-- hidden native audio element -->
+          <audio id="audio" preload="metadata">
+            <!-- Replace 'audio.mp3' with your hosted audio file or a relative path when deploying -->
+            <source src="audio.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+          </audio>
+
+          <div class="transcript" id="transcript">
+            <h3>Transcript</h3>
+            <div id="transcriptText">
+              <!-- sample transcript content -->
+              <p>（導語）此段錄音收錄了療癒傳承者的故事，聲音在時間中延伸，交會過去與現在。 He speaks of lineage and rituals passed from hand to hand, the small acts that become medicine.</p>
+
+              <p>Speaker: "When my grandmother made the poultice, she said the plants remembered. We only needed to listen."</p>
+
+              <p>— End of excerpt —</p>
+            </div>
+            <button id="toggleLang" class="btn ghost" style="margin-top:12px">Download Transcript</button>
+          </div>
+        </div>
+      </section>
+
+      <aside class="aside">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <strong>Exhibition info</strong>
+            <div class="meta">Modern — Chinese traditionalist style</div>
+          </div>
+        </div>
+
+        <div style="margin-top:16px" class="qrwrap">
+          <div id="qrcode" class="qr">QR</div>
+          <button id="genQr" class="btn">Generate QR for this page</button>
+          <div class="meta">Point a phone camera at the QR to open this page on your device.</div>
+        </div>
+
+        <div style="margin-top:18px">
+          <div style="font-weight:700">Notes</div>
+          <div class="meta">Replace <code>audio.mp3</code> with your file. Host the HTML on a server (GitHub Pages, Netlify, etc.) for stable QR access.</div>
+        </div>
+      </aside>
+    </main>
+
+    <footer>© The Lineage of Healing — design: modern · Chinese traditionalist</footer>
+  </div>
+
+  <!-- QRCode library (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <script>
+    const audio = document.getElementById('audio');
+    const playBtn = document.getElementById('playBtn');
+    const rew = document.getElementById('rewBtn');
+    const fwd = document.getElementById('fwdBtn');
+    const currentTime = document.getElementById('currentTime');
+    const durationEl = document.getElementById('duration');
+    const seek = document.getElementById('seek');
+    const downloadAudio = document.getElementById('downloadAudio');
+    const genQr = document.getElementById('genQr');
+
+    // set download link to audio src if present
+    function setDownloadHref(){
+      const s = audio.querySelector('source');
+      if(s && s.src){
+        downloadAudio.href = s.src;
+        downloadAudio.setAttribute('download', 'the-lineage-of-healing.mp3');
+      } else {
+        downloadAudio.href = '#';
+      }
+    }
+    setDownloadHref();
+
+    audio.addEventListener('loadedmetadata', ()=>{
+      const d = audio.duration;
+      durationEl.textContent = formatTime(d);
+      seek.max = Math.floor(d);
+    });
+
+    audio.addEventListener('timeupdate', ()=>{
+      currentTime.textContent = formatTime(audio.currentTime);
+      if(!seek.dragging) seek.value = Math.floor(audio.currentTime);
+    });
+
+    playBtn.addEventListener('click', ()=>{
+      if(audio.paused){audio.play();playBtn.textContent='Pause'} else {audio.pause();playBtn.textContent='Play'}
+    });
+
+    rew.addEventListener('click', ()=>{audio.currentTime = Math.max(0,audio.currentTime - 10)});
+    fwd.addEventListener('click', ()=>{audio.currentTime = Math.min(audio.duration, audio.currentTime + 10)});
+
+    seek.addEventListener('input', (e)=>{seek.dragging=true; currentTime.textContent = formatTime(e.target.value)});
+    seek.addEventListener('change', (e)=>{audio.currentTime = e.target.value; seek.dragging=false});
+
+    function formatTime(s){
+      if(isNaN(s)) return '0:00';
+      const m = Math.floor(s/60); const sec = Math.floor(s%60).toString().padStart(2,'0');
+      return `${m}:${sec}`;
+    }
+
+    // Generate QR for this page (uses location.href) 
+    genQr.addEventListener('click', ()=>{
+      const target = location.href;
+      const container = document.getElementById('qrcode');
+      container.innerHTML='';
+      // fallback: create a canvas QR
+      QRCode.toCanvas(target, {width:200}, (err, canvas) => {
+        if(err){
+          container.textContent = 'QR error';
+          console.error(err);
+          return;
+        }
+        container.appendChild(canvas);
+      });
+    });
+
+    // download transcript as .txt
+    document.getElementById('toggleLang').addEventListener('click', ()=>{
+      const t = document.getElementById('transcriptText').innerText.trim();
+      const blob = new Blob([t], {type:'text/plain;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'transcript.txt';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    // auto-generate QR once when hosted with an absolute URL
+    window.addEventListener('load', ()=>{
+      try{ if(location.protocol.startsWith('http')) document.getElementById('genQr').click(); }catch(e){}
+    });
+  </script>
+</body>
+</html>
